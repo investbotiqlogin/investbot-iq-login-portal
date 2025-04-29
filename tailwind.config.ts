@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				investbot: {
+					purple: '#7E69AB',
+					lightPurple: '#9b87f5',
+					darkPurple: '#6E59A5',
+					indigo: '#4F46E5',
+					light: '#E5DEFF',
+					gray: '#F9FAFB',
 				}
 			},
 			borderRadius: {
@@ -84,11 +93,33 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'orb-float': {
+					'0%, 100%': {
+						transform: 'translateY(0) scale(1)',
+						opacity: '0.8'
+					},
+					'50%': {
+						transform: 'translateY(-20px) scale(1.05)',
+						opacity: '1'
+					}
+				},
+				'pulse-glow': {
+					'0%, 100%': {
+						opacity: '0.6',
+						transform: 'scale(1)'
+					},
+					'50%': {
+						opacity: '1',
+						transform: 'scale(1.05)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'orb-float': 'orb-float 8s ease-in-out infinite',
+				'pulse-glow': 'pulse-glow 4s ease-in-out infinite'
 			}
 		}
 	},
