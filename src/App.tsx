@@ -27,7 +27,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/inlog" element={<Login />} />
 
-            {/* Member routes */}
+            {/* Member routes - allow all non-admin roles */}
             <Route 
               path="/member" 
               element={
