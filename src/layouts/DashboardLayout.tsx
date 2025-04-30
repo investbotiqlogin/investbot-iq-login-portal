@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import type { UserRole } from '@/contexts/AuthContext';
 
 interface DashboardLayoutProps {
-  role: 'member' | 'admin'; // This remains as is since we only have two dashboard types
+  role: 'member' | 'admin'; // We only have two dashboard types
 }
 
 const DashboardLayout = ({ role }: DashboardLayoutProps) => {
@@ -34,8 +34,8 @@ const DashboardLayout = ({ role }: DashboardLayoutProps) => {
     return <Navigate to="/member/dashboard" replace />;
   }
   
-  // Voor de member dashboard, controleer of gebruiker geen admin is
-  // Beschouw alle niet-admin rollen als member voor dashboard toegang
+  // Voor de member dashboard, beschouw alle niet-admin rollen als 'member'
+  // Stuur admin gebruikers naar het admin dashboard
   if (role === 'member' && userRole === 'admin') {
     return <Navigate to="/admin/dashboard" replace />;
   }
