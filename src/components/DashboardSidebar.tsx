@@ -13,6 +13,8 @@ import {
   LogOut
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
+import type { UserRole } from '@/contexts/AuthContext';
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -42,6 +44,7 @@ interface DashboardSidebarProps {
 
 const DashboardSidebar = ({ role = 'member' }: DashboardSidebarProps) => {
   const location = useLocation();
+  const { signOut } = useAuth();
   const currentPath = location.pathname;
 
   const memberItems = [
@@ -61,6 +64,11 @@ const DashboardSidebar = ({ role = 'member' }: DashboardSidebarProps) => {
   ];
 
   const items = role === 'admin' ? adminItems : memberItems;
+
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    signOut();
+  };
 
   return (
     <div className="h-screen w-64 bg-background border-r flex flex-col">
@@ -85,15 +93,16 @@ const DashboardSidebar = ({ role = 'member' }: DashboardSidebarProps) => {
       </div>
       
       <div className="p-4 border-t mt-auto">
-        <Link
-          to="/"
+        <a
+          href="#"
+          onClick={handleLogout}
           className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-investbot-light transition-colors"
         >
           <div className="w-5 h-5">
             <LogOut size={18} />
           </div>
           <span>Uitloggen</span>
-        </Link>
+        </a>
       </div>
     </div>
   );

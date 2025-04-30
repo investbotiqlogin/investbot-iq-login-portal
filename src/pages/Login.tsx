@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import OrbBackground from '../components/OrbBackground';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,57 +8,42 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { toast } from '@/hooks/use-toast';
-
-type UserRole = 'member' | 'student' | 'ouder' | 'freelancer' | 'ondernemer' | 'admin' | 'affiliated';
+import { useAuth } from '@/contexts/AuthContext';
+import type { UserRole } from '@/contexts/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { signIn, user } = useAuth();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState<UserRole>('member');
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Redirect als gebruiker al is ingelogd
+  React.useEffect(() => {
+    if (user) {
+      // Navigeer naar waar de gebruiker vandaan kwam, of naar de standaard pagina
+      const origin = (location.state as any)?.from?.pathname || '/member/dashboard';
+      navigate(origin);
+    }
+  }, [user, navigate, location]);
 
-  // Mock login function (will be replaced with Supabase integration)
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !password) {
-      toast({
-        title: "Login mislukt",
-        description: "Vul alle velden in om in te loggen.",
-        variant: "destructive",
-      });
       return;
     }
     
     setIsLoading(true);
     
     try {
-      // This will be replaced with actual Supabase authentication
-      console.log('Logging in with:', { email, password, role });
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Redirect based on role
-      if (role === 'admin') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/member/dashboard');
-      }
-      
-      toast({
-        title: "Ingelogd",
-        description: "U bent succesvol ingelogd.",
-      });
+      await signIn(email, password, role);
+      // De redirect gebeurt in de signIn functie
     } catch (error) {
-      console.error('Login error:', error);
-      toast({
-        title: "Login mislukt",
-        description: "Controleer uw inloggegevens en probeer het opnieuw.",
-        variant: "destructive",
-      });
+      // Errors worden in de signIn functie afgehandeld
     } finally {
       setIsLoading(false);
     }
